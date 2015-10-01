@@ -1,0 +1,48 @@
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>Vis</title>
+  <script src="lib/d3.js"></script>
+  <script src="js/smgvis.js"></script>
+
+  <style>
+    svg {
+      border: 1px solid #999;
+      overflow: auto;
+      margin-left: auto; 
+      margin-right: auto; 
+      display: block;
+    }
+    div {
+      text-align: center; 
+    }
+  </style>
+
+</head>
+
+<body onload="init()"> <!-- init() method defined in js/smgvis.js-->
+<h1 align="center">SMG Visualization</h1>
+
+<div style="margin-left: auto; margin-right: auto; display: block; width: 400;">
+  <label for="files">Select a .dot file or directory containing .dot files: </label>
+  <input type="file" id="files" name="files[]" multiple onchange="handleFileSelect(this.files)"/>
+  <output id="list"></output>
+</div>
+
+<br>
+
+<div style="margin-left: auto; margin-right: auto; display: block; width: 400;">
+  <div id="files" style="margin-left: auto; margin-right: auto; display: table-cell; width: 200;">
+    <label for="dropdown">Select a File to View: </label><select id="dropdown"></select>
+  </div>
+  <div style="display: table-cell; width: 200;">
+    <button id="updateVis" onclick="readFile()">Update Vis</button>
+  </div>
+</div>
+
+<br>
+
+<div id="vis"></div>
+
+</body>
+</html>
