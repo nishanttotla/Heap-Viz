@@ -145,11 +145,11 @@ function convertDotFile(original) {
 
 				if (nodeKeys.indexOf(srcKey) == -1) {
 					nodeKeys.push(srcKey);
-					nodeLabels.push("pointer " + nodeKeys.length);
+					nodeLabels.push("Node " + nodeKeys.length);
 				}
 				if (nodeKeys.indexOf(tarKey) == -1) {
 					nodeKeys.push(tarKey);
-					nodeLabels.push("pointer " + nodeKeys.length);
+					nodeLabels.push("Node " + nodeKeys.length);
 				}
 
 				linkSrcs.push(srcKey);
@@ -157,7 +157,6 @@ function convertDotFile(original) {
 				edgeLabels.push(edgeLabel);
 			} else if (l.indexOf("label") != -1) {
 				var nodeLabel = l.substring(l.indexOf("label") + 7, l.indexOf("\"", l.indexOf("label") + 7));
-				console.log(nodeLabel);
 				var nodeKey = l.substring(0, l.indexOf("[")).trim();
 				if (nodeKeys.indexOf(nodeKey) == -1) {
 					nodeKeys.push(nodeKey);
