@@ -155,8 +155,9 @@ function convertDotFile(original) {
 				linkSrcs.push(srcKey);
 				linkTars.push(tarKey);
 				edgeLabels.push(edgeLabel);
-			} else if (l.indexOf("label") != -1 && l.indexOf("shape=plaintext") != -1) {
+			} else if (l.indexOf("label") != -1) {
 				var nodeLabel = l.substring(l.indexOf("label") + 7, l.indexOf("\"", l.indexOf("label") + 7));
+				console.log(nodeLabel);
 				var nodeKey = l.substring(0, l.indexOf("[")).trim();
 				if (nodeKeys.indexOf(nodeKey) == -1) {
 					nodeKeys.push(nodeKey);
@@ -168,6 +169,8 @@ function convertDotFile(original) {
 			}
 		}
 	}
+
+	// create node and link arrays
 
 	var nodeArray = [];
 	var linkArray = [];
