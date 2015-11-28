@@ -66,6 +66,15 @@ function displayGraph(nodes, links) {
 		.style("stroke", "#CCC").style("stroke-width", 4)
 		.style("marker-end", "url(#suit)");
 
+	var linkText = svg.selectAll(".linkText")
+	  .data(force.links())
+	  .enter().append("svg:text")
+	  .attr("class","linkText")
+	  .attr("dx",20)
+	  .attr("dy",0)
+    .style("fill","red")
+	  .text(function(d,i) { return "n"});
+
 	var node = svg.selectAll("g.node").data(force.nodes())
 		.enter().append("svg:g").attr("class", "node");
 
@@ -92,6 +101,14 @@ function displayGraph(nodes, links) {
 		});
 	}
 
+	var updateLinkText = function() {
+		this.attr("dx", function(d) {
+			return (d.source.x + d.target.x)/2;
+		}).attr("dy", function(d) {
+			return (d.source.y + d.target.y)/2;
+		})
+	}
+
 	var updateNode = function() {
 		this.attr("transform", function(d) {
 			return "translate(" + d.x + "," + d.y + ")";
@@ -101,6 +118,7 @@ function displayGraph(nodes, links) {
 	force.on("tick", function() {
 		node.call(updateNode);
 		link.call(updateLink);
+		linkText.call(updateLinkText);
 	});
 }
 
