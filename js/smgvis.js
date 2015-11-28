@@ -54,16 +54,23 @@ function displayGraph(nodes, links) {
 
 	svg.append("defs").selectAll("marker")
 		.data(["suit", "licensing", "resolved"]).enter()
-		.append("marker").attr("id", function(d) { return d; })
-		.attr("viewBox", "0 -5 10 10").attr("refX", 22)
-		.attr("refY", 0).attr("markerWidth", 4)
-		.attr("markerHeight", 4).attr("orient", "auto")
-		.append("path").attr("d", "M0,-5L10,0L0,5 L10,0 L0, -5")
+		.append("marker")
+		.attr("id", function(d) { return d; })
+		.attr("viewBox", "0 -5 10 10")
+		.attr("refX", 22)
+		.attr("refY", 0)
+		.attr("markerWidth", 4)
+		.attr("markerHeight", 4)
+		.attr("orient", "auto")
+		.append("path")
+		.attr("d", "M0,-5L10,0L0,5 L10,0 L0, -5")
 		.style("stroke", "#CCC");
 
 	var link = svg.selectAll("line.link").data(links).enter()
-		.append("svg:line").attr("class", "link")
-		.style("stroke", "#CCC").style("stroke-width", 4)
+		.append("svg:line")
+		.attr("class", "link")
+		.style("stroke", "#CCC")
+		.style("stroke-width", 4)
 		.style("marker-end", "url(#suit)");
 
 	var linkText = svg.selectAll(".linkText")
@@ -73,10 +80,11 @@ function displayGraph(nodes, links) {
 	  .attr("dx",20)
 	  .attr("dy",0)
     .style("fill","red")
-	  .text(function(d,i) { return "n"});
+	  .text(function(d,i) { return d.label; });
 
-	var node = svg.selectAll("g.node").data(force.nodes())
-		.enter().append("svg:g").attr("class", "node");
+	var node = svg.selectAll("g.node").data(force.nodes()).enter()
+		.append("svg:g")
+		.attr("class", "node");
 
 	node.append("svg:circle").attr("r", radius)
 		.style("fill", function(d) { if (d.name == "NULL") { return "#999"; } else { return "#FCC" } })
