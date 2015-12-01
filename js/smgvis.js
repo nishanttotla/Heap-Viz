@@ -89,7 +89,7 @@ function displayGraph(nodes, links) {
 		.attr("class", "node");
 
 	node.append("svg:circle").attr("r", radius)
-		.style("fill", function(d) { if (d.name == "NULL") { return "#999"; } else { return "#FCC" } })
+		.style("fill", function(d) { return getNodeColor(d); })
 		.style("stroke", "#FFF").style("stroke-width", 3);
 
 	node.append("svg:text").text(function(d) { return d.name; })
@@ -98,6 +98,18 @@ function displayGraph(nodes, links) {
 		.style("text-anchor", "middle").style("alignment-baseline", "middle");
 
 	node.call(force.drag);
+
+	function getNodeColor(d) {
+		if (d.name == "NULL") {
+			return "#999";
+		} else if (d.pred == "T") {
+			return "#0F0";
+		} else if (d.pred == "F") {
+			return "#F00";
+		} else if (d.pred == "U") {
+			return "#FCC";
+		}
+	}
 
 	var updateLink = function() {
 		this.attr("x1", function(d) {
@@ -136,6 +148,7 @@ function displayGraph(nodes, links) {
 function convertDotFile(original) {
 	var nodeKeys = [];
 	var nodeLabels = [];
+	var nodePreds = [];
 	var linkSrcs = [];
 	var linkTars = [];
 	var edgeLabels = [];
@@ -174,10 +187,12 @@ function convertDotFile(original) {
 				if (nodeKeys.indexOf(srcKey) == -1) {
 					nodeKeys.push(srcKey);
 					nodeLabels.push("Node " + nodeKeys.length);
+					nodePreds.push("U");
 				}
 				if (nodeKeys.indexOf(tarKey) == -1) {
 					nodeKeys.push(tarKey);
 					nodeLabels.push("Node " + nodeKeys.length);
+					nodePreds.push("U");
 				}
 
 				linkSrcs.push(srcKey);
@@ -193,6 +208,18 @@ function convertDotFile(original) {
 					var pos = nodeKeys.indexOf(nodeKey);
 					nodeLabels[pos] = nodeLabel;
 				}
+			} else if (l.indexOf("pred") != -1) {
+				// value of predicate for the node can be true or false. This is experimental for now
+				// TODO : It would make sense to create a node object instead of multiple arrays
+				var nodePred = l.substring(l.indexOf("pred") + 6, l.indexOf("\"", l.indexOf("pred") + 6));
+				var nodeKey = l.substring(0, l.indexOf("[")).trim();
+				if (nodeKeys.indexOf(nodeKey) == -1) {
+					nodeKeys.push(nodeKey);
+					nodePreds.push(nodePred);
+				} else {
+					var pos = nodeKeys.indexOf(nodeKey);
+					nodePreds[pos] = nodePred;
+				}
 			}
 		}
 	}
@@ -205,7 +232,8 @@ function convertDotFile(original) {
 	for (var i = 0; i < nodeKeys.length; i++) {
 		var node = {
 			id : nodeKeys[i],
-			name : nodeLabels[i]
+			name : nodeLabels[i],
+			pred : nodePreds[i]
 		};
 		nodeArray.push(node);
 	}
