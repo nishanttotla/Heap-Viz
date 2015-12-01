@@ -45,7 +45,9 @@ function displayGraph(nodes, links) {
 	// remove stale svg elements
 	svg.selectAll("line.link").remove();
 	svg.selectAll("g.node").remove();
+	svg.selectAll(".linkText").remove();
 
+	// initialize force directed graph
 	var force = d3.layout.force().size([width, height])
 		.nodes(nodes).links(links).gravity(1)
 		.linkDistance(100)
