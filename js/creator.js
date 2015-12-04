@@ -7,6 +7,10 @@ var width  = 960,
     height = 500,
     colors = d3.scale.category10();
 
+// graph appearance parameters
+var smallRadius = 15,
+    largeRadius = 20;
+
 var svg = d3.select('body')
   .append('svg')
   .attr('oncontextmenu', 'return false;')
@@ -91,8 +95,8 @@ function tick() {
         dist = Math.sqrt(deltaX * deltaX + deltaY * deltaY),
         normX = deltaX / dist,
         normY = deltaY / dist,
-        sourcePadding = d.left ? 20 : 15,
-        targetPadding = d.right ? 20 : 15,
+        sourcePadding = d.left ? (d.source.summary ? largeRadius+5 : largeRadius) : (d.source.summary ? smallRadius+5 : smallRadius),
+        targetPadding = d.right ? (d.target.summary ? largeRadius+5 : largeRadius) : (d.target.summary ? smallRadius+5 : smallRadius),
         sourceX = d.source.x + (sourcePadding * normX),
         sourceY = d.source.y + (sourcePadding * normY),
         targetX = d.target.x - (targetPadding * normX),
@@ -144,6 +148,7 @@ function restart() {
   // update existing nodes (reflexive & selected visual states)
   circle.selectAll('circle')
     .style('fill', function(d) { return (d === selected_node) ? d3.rgb(colors(d.id)).brighter().toString() : colors(d.id); })
+    .attr('r', function(d) { return (d.summary) ? largeRadius : smallRadius })
     .classed('reflexive', function(d) { return d.reflexive; });
 
   // add new nodes
@@ -151,7 +156,7 @@ function restart() {
 
   g.append('svg:circle')
     .attr('class', 'node')
-    .attr('r', 15)
+    .attr('r', function(d) { return (d.summary) ? largeRadius : smallRadius })
     .style('fill', function(d) { return (d === selected_node) ? d3.rgb(colors(d.id)).brighter().toString() : colors(d.id); })
     .style('stroke', function(d) { return d3.rgb(colors(d.id)).darker().toString(); })
     .classed('reflexive', function(d) { return d.reflexive; })
