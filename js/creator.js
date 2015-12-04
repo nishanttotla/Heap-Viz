@@ -230,7 +230,7 @@ function restart() {
       if(link) {
         link[direction] = true;
       } else {
-        link = {source: source, target: target, left: false, right: false};
+        link = {source: source, target: target, left: false, right: false, unknown: false};
         link[direction] = true;
         links.push(link);
       }
