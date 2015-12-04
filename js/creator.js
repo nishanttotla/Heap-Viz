@@ -6,9 +6,45 @@ Directed graph editor courtesy http://bl.ocks.org/rkirsling/5001347
 var allPredicates = ['p1', 'p2'],
     allHeapvars = ['x', 'y'];
 
-// initial assignments. Other possible values are 't' and 'm'
-var initPredAssignments = ['f', 'f'],
-    initVarAssignments = ['f', 'f'];
+// initial assignments. Other possible values are 't' and 'm'. These are functions because assignments aren't immutable
+function initPredAssignments() {
+  return ['f', 'f'];
+}
+
+function initHeapvarAssignments() {
+  return ['f', 'f'];
+}
+
+/*
+functions to set predicate/heap variables of selected node
+*/
+function setPredicate(pred, val) {
+  if(selected_node) {
+    selected_node.predicates[allPredicates.indexOf(pred)] = val;
+  }
+}
+
+// additional constraint here - if a given heap variable is set to true, then it must be false for every other node
+function setHeapvar(heapvar, val) {
+  var index = allHeapvars.indexOf(heapvar);
+  if(selected_node) {
+    selected_node.heapvars[index] = val;
+
+    if(val === 't') {
+      for(i=0; i<nodes.length; i++) {
+        if(selected_node.id !== nodes[i].id) {
+          nodes[i].heapvars[index] = 'f';
+        }
+      }
+    }
+  }
+}
+
+function printHeapvars() {
+  for(i=0; i<nodes.length; i++) {
+    console.log(nodes[i].heapvars);
+  }
+}
 
 // set up SVG for D3
 var width  = 960,
@@ -30,9 +66,9 @@ var svg = d3.select('body')
 //  - reflexive edges are indicated on the node (as a bold black circle).
 //  - links are always source < target; edge directions are set by 'left' and 'right'.
 var nodes = [
-    {id: 0, reflexive: false, summary: false, predicates: initPredAssignments, heapvars: initVarAssignments},
-    {id: 1, reflexive: true, summary: false, predicates: initPredAssignments, heapvars: initVarAssignments},
-    {id: 2, reflexive: false, summary: false, predicates: initPredAssignments, heapvars: initVarAssignments}
+    {id: 0, reflexive: false, summary: false, predicates: initPredAssignments(), heapvars: initHeapvarAssignments()},
+    {id: 1, reflexive: true, summary: false, predicates: initPredAssignments(), heapvars: initHeapvarAssignments()},
+    {id: 2, reflexive: false, summary: false, predicates: initPredAssignments(), heapvars: initHeapvarAssignments()}
   ],
   lastNodeId = 2,
   links = [
@@ -269,7 +305,7 @@ function mousedown() {
 
   // insert new node at point
   var point = d3.mouse(this),
-      node = {id: ++lastNodeId, reflexive: false, summary: false, predicates: initPredAssignments, heapvars: initVarAssignments};
+      node = {id: ++lastNodeId, reflexive: false, summary: false, predicates: initPredAssignments(), heapvars: initHeapvarAssignments()};
   node.x = point[0];
   node.y = point[1];
   nodes.push(node);
