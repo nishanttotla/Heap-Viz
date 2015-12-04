@@ -18,9 +18,9 @@ var svg = d3.select('body')
 //  - reflexive edges are indicated on the node (as a bold black circle).
 //  - links are always source < target; edge directions are set by 'left' and 'right'.
 var nodes = [
-    {id: 0, reflexive: false},
-    {id: 1, reflexive: true },
-    {id: 2, reflexive: false}
+    {id: 0, reflexive: false, summary: false},
+    {id: 1, reflexive: true, summary: false},
+    {id: 2, reflexive: false, summary: false}
   ],
   lastNodeId = 2,
   links = [
@@ -254,7 +254,7 @@ function mousedown() {
 
   // insert new node at point
   var point = d3.mouse(this),
-      node = {id: ++lastNodeId, reflexive: false};
+      node = {id: ++lastNodeId, reflexive: false, summary: false};
   node.x = point[0];
   node.y = point[1];
   nodes.push(node);
@@ -348,6 +348,13 @@ function keydown() {
         // set link direction to right only
         selected_link.left = false;
         selected_link.right = true;
+      }
+      restart();
+      break;
+    case 83: // S
+      if(selected_node) {
+        // toggle whether node is a summary node
+        selected_node.summary = !selected_node.summary;
       }
       restart();
       break;
