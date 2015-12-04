@@ -2,6 +2,13 @@
 Directed graph editor courtesy http://bl.ocks.org/rkirsling/5001347
 */
 
+// verification data, must be retrieved from the verifier
+var allPredicates = ['p1', 'p2'],
+    allHeapvars = ['x', 'y'];
+
+var initPredAssignments = ['f', 'f'],
+    initVarAssignments = ['f', 'f'];
+
 // set up SVG for D3
 var width  = 960,
     height = 500,
@@ -22,9 +29,9 @@ var svg = d3.select('body')
 //  - reflexive edges are indicated on the node (as a bold black circle).
 //  - links are always source < target; edge directions are set by 'left' and 'right'.
 var nodes = [
-    {id: 0, reflexive: false, summary: false},
-    {id: 1, reflexive: true, summary: false},
-    {id: 2, reflexive: false, summary: false}
+    {id: 0, reflexive: false, summary: false, predicates: initPredAssignments, heapvars: initVarAssignments},
+    {id: 1, reflexive: true, summary: false, predicates: initPredAssignments, heapvars: initVarAssignments},
+    {id: 2, reflexive: false, summary: false, predicates: initPredAssignments, heapvars: initVarAssignments}
   ],
   lastNodeId = 2,
   links = [
