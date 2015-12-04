@@ -35,8 +35,8 @@ var nodes = [
   ],
   lastNodeId = 2,
   links = [
-    {source: nodes[0], target: nodes[1], left: false, right: true },
-    {source: nodes[1], target: nodes[2], left: false, right: true }
+    {source: nodes[0], target: nodes[1], left: false, right: true, unknown: false},
+    {source: nodes[1], target: nodes[2], left: false, right: true, unknown: false}
   ];
 
 // init D3 force layout
@@ -266,7 +266,7 @@ function mousedown() {
 
   // insert new node at point
   var point = d3.mouse(this),
-      node = {id: ++lastNodeId, reflexive: false, summary: false};
+      node = {id: ++lastNodeId, reflexive: false, summary: false, predicates: initPredAssignments, heapvars: initVarAssignments};
   node.x = point[0];
   node.y = point[1];
   nodes.push(node);
