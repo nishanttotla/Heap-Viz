@@ -6,6 +6,7 @@ Directed graph editor courtesy http://bl.ocks.org/rkirsling/5001347
 var allPredicates = ['p1', 'p2'],
     allHeapvars = ['x', 'y'];
 
+// initial assignments. Other possible values are 't' and 'u'
 var initPredAssignments = ['f', 'f'],
     initVarAssignments = ['f', 'f'];
 
@@ -367,6 +368,13 @@ function keydown() {
       if(selected_node) {
         // toggle whether node is a summary node
         selected_node.summary = !selected_node.summary;
+      }
+      restart();
+      break;
+    case 85: // U
+      if(selected_link) {
+        // toggle whether link has unknown value
+        selected_link.unknown = !selected_link.unknown;
       }
       restart();
       break;
