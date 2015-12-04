@@ -6,7 +6,7 @@ Directed graph editor courtesy http://bl.ocks.org/rkirsling/5001347
 var allPredicates = ['p1', 'p2'],
     allHeapvars = ['x', 'y'];
 
-// initial assignments. Other possible values are 't' and 'u'
+// initial assignments. Other possible values are 't' and 'm'
 var initPredAssignments = ['f', 'f'],
     initVarAssignments = ['f', 'f'];
 
@@ -36,8 +36,8 @@ var nodes = [
   ],
   lastNodeId = 2,
   links = [
-    {source: nodes[0], target: nodes[1], left: false, right: true, unknown: false},
-    {source: nodes[1], target: nodes[2], left: false, right: true, unknown: false}
+    {source: nodes[0], target: nodes[1], left: false, right: true, maybe: false},
+    {source: nodes[1], target: nodes[2], left: false, right: true, maybe: false}
   ];
 
 // init D3 force layout
@@ -124,6 +124,7 @@ function restart() {
 
   // update existing links
   path.classed('selected', function(d) { return d === selected_link; })
+    .classed('maybe', function(d) { return d.maybe; })
     .style('marker-start', function(d) { return d.left ? 'url(#start-arrow)' : ''; })
     .style('marker-end', function(d) { return d.right ? 'url(#end-arrow)' : ''; });
 
@@ -131,6 +132,7 @@ function restart() {
   // add new links
   path.enter().append('svg:path')
     .attr('class', 'link')
+    .classed('maybe', function(d) { return d.maybe; })
     .classed('selected', function(d) { return d === selected_link; })
     .style('marker-start', function(d) { return d.left ? 'url(#start-arrow)' : ''; })
     .style('marker-end', function(d) { return d.right ? 'url(#end-arrow)' : ''; })
@@ -231,7 +233,7 @@ function restart() {
       if(link) {
         link[direction] = true;
       } else {
-        link = {source: source, target: target, left: false, right: false, unknown: false};
+        link = {source: source, target: target, left: false, right: false, maybe: false};
         link[direction] = true;
         links.push(link);
       }
@@ -371,10 +373,10 @@ function keydown() {
       }
       restart();
       break;
-    case 85: // U
+    case 77: // M
       if(selected_link) {
-        // toggle whether link has unknown value
-        selected_link.unknown = !selected_link.unknown;
+        // toggle whether link has maybe value
+        selected_link.maybe = !selected_link.maybe;
       }
       restart();
       break;
