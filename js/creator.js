@@ -31,19 +31,16 @@ function setHeapvar(heapvar, val) {
     selected_node.heapvars[index] = val;
 
     if(val === 't') {
-      for(i=0; i<nodes.length; i++) {
-        if(selected_node.id !== nodes[i].id) {
-          nodes[i].heapvars[index] = 'f';
-        }
-      }
+      d3.selectAll('.node').each(function(d) {
+        if(selected_node.id !== d.id) {
+          d.heapvars[index] = 'f';
+        } });
     }
   }
 }
 
 function printHeapvars() {
-  for(i=0; i<nodes.length; i++) {
-    console.log(nodes[i].heapvars);
-  }
+  d3.selectAll('.node').each(function(d) { console.log(d.heapvars); } )
 }
 
 // set up SVG for D3
