@@ -69,8 +69,8 @@ var nodes = [
   ],
   lastNodeId = 2,
   links = [
-    {source: nodes[0], target: nodes[1], left: false, right: true, maybe: false},
-    {source: nodes[1], target: nodes[2], left: false, right: true, maybe: false}
+    {source: nodes[0], target: nodes[1], left: false, right: true, maybe: true},
+    {source: nodes[1], target: nodes[2], left: false, right: true, maybe: true}
   ];
 
 // init D3 force layout
@@ -266,7 +266,7 @@ function restart() {
       if(link) {
         link[direction] = true;
       } else {
-        link = {source: source, target: target, left: false, right: false, maybe: false};
+        link = {source: source, target: target, left: false, right: false, maybe: true};
         link[direction] = true;
         links.push(link);
       }
