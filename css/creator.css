@@ -32,6 +32,7 @@ path.link.maybe {
 }
 
 path.link.dragline {
+  stroke: #FCC;
   pointer-events: none;
 }
 
