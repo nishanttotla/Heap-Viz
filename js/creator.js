@@ -70,7 +70,7 @@ var svg = d3.select('body')
 //  - links are always source < target; edge directions are set by 'left' and 'right'.
 var nodes = [
     {id: 0, reflexive: false, summary: false, predicates: initPredAssignments(), heapvars: initHeapvarAssignments()},
-    {id: 1, reflexive: true, summary: false, predicates: initPredAssignments(), heapvars: initHeapvarAssignments()},
+    {id: 1, reflexive: false, summary: false, predicates: initPredAssignments(), heapvars: initHeapvarAssignments()},
     {id: 2, reflexive: false, summary: false, predicates: initPredAssignments(), heapvars: initHeapvarAssignments()}
   ],
   lastNodeId = 2,
@@ -252,26 +252,18 @@ function restart() {
       d3.select(this).attr('transform', '');
 
       // add link to graph (update if exists)
-      // NB: links are strictly source < target; arrows separately specified by booleans
-      var source, target, direction;
-      if(mousedown_node.id < mouseup_node.id) {
-        source = mousedown_node;
-        target = mouseup_node;
-        direction = 'right';
-      } else {
-        source = mouseup_node;
-        target = mousedown_node;
-        direction = 'left';
-      }
-
+      // NB: links are strictly right only
+      // mouseup is the target of the dragged path, mousedown the source
+      var source = mousedown_node,
+          target = mouseup_node,
+          direction = 'right';
       var link;
       link = links.filter(function(l) {
         return (l.source === source && l.target === target);
       })[0];
 
-      if(link) {
-        link[direction] = true;
-      } else {
+      // if link doesn't exist, create it
+      if(!link) {
         link = {source: source, target: target, left: false, right: false, maybe: true};
         link[direction] = true;
         links.push(link);
@@ -349,7 +341,6 @@ function spliceLinksForNode(node) {
   });
 }
 
-// TODO : This function might need to be changed based on Issue #7
 function spliceLinksForNodeOutgoingExceptTarget(node, target) {
   var toSplice = links.filter(function(l) {
     return (l.source === node && l.target !== target);
