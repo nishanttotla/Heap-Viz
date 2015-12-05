@@ -349,14 +349,22 @@ function spliceLinksForNode(node) {
   });
 }
 
+// TODO : This function might need to be changed based on Issue #7
 function spliceLinksForNodeOutgoingExceptTarget(node, target) {
   var toSplice = links.filter(function(l) {
     return (l.source === node && l.target !== target);
   });
-  console.log(toSplice);
   toSplice.map(function(l) {
     links.splice(links.indexOf(l), 1);
   });
+}
+
+// converts all outgoing edges to Maybe. This is required whenever a new link is added (Ref Issue #5)
+function convertAllOutgoingEdgesMaybe(node) {
+  var toConvert = links.filter(function(l) {
+    return (l.source === node);
+  }); // at most one node in toConvert actually needs to be converted
+  toConvert.map();
 }
 
 // only respond once per keydown
@@ -388,34 +396,7 @@ function keydown() {
       selected_node = null;
       restart();
       break;
-    case 66: // B
-      if(selected_link) {
-        // set link direction to both left and right
-        selected_link.left = true;
-        selected_link.right = true;
-      }
-      restart();
-      break;
-    case 76: // L
-      if(selected_link) {
-        // set link direction to left only
-        selected_link.left = true;
-        selected_link.right = false;
-      }
-      restart();
-      break;
-    case 82: // R
-      if(selected_node) {
-        // toggle node reflexivity
-        selected_node.reflexive = !selected_node.reflexive;
-      } else if(selected_link) {
-        // set link direction to right only
-        selected_link.left = false;
-        selected_link.right = true;
-      }
-      restart();
-      break;
-    case 83: // S
+    // case 83: // S
       if(selected_node) {
         // toggle whether node is a summary node
         selected_node.summary = !selected_node.summary;
