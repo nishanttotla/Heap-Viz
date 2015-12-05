@@ -424,6 +424,10 @@ function keydown() {
       break;
     case 77: // M
       if(selected_link) {
+        // delete all other links if setting selected_link to True
+        if(selected_link.maybe) {
+          spliceLinksForNodeOutgoingExceptTarget(selected_link.source, selected_link.target);
+        }
         // toggle whether link has maybe value
         selected_link.maybe = !selected_link.maybe;
       }
