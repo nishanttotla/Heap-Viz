@@ -343,6 +343,16 @@ function spliceLinksForNode(node) {
   });
 }
 
+function spliceLinksForNodeOutgoingExceptTarget(node, target) {
+  var toSplice = links.filter(function(l) {
+    return (l.source === node && l.target !== target);
+  });
+  console.log(toSplice);
+  toSplice.map(function(l) {
+    links.splice(links.indexOf(l), 1);
+  });
+}
+
 // only respond once per keydown
 var lastKeyDown = -1;
 
