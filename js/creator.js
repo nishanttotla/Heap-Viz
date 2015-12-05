@@ -267,6 +267,8 @@ function restart() {
         link = {source: source, target: target, left: false, right: false, maybe: true};
         link[direction] = true;
         links.push(link);
+        // if there is a True link going out of source, convert it to Maybe
+        convertAllOutgoingEdgesMaybe(source);
       }
 
       // select new link
@@ -355,7 +357,7 @@ function convertAllOutgoingEdgesMaybe(node) {
   var toConvert = links.filter(function(l) {
     return (l.source === node);
   }); // at most one node in toConvert actually needs to be converted
-  toConvert.map();
+  toConvert.map(function(l) { l.maybe = true; }); // a mutating map, ugh!
 }
 
 // only respond once per keydown
