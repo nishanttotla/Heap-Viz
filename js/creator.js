@@ -389,7 +389,7 @@ function keydown() {
       selected_node = null;
       restart();
       break;
-    // case 83: // S
+    case 83: // S
       if(selected_node) {
         // toggle whether node is a summary node
         selected_node.summary = !selected_node.summary;
