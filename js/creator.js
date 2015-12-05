@@ -25,6 +25,7 @@ function setPredicate(pred, val) {
 }
 
 // additional constraint here - if a given heap variable is set to true, then it must be false for every other node
+// if we're adding a maybe node, then all other 'true' values get converted to maybe
 function setHeapvar(heapvar, val) {
   var index = allHeapvars.indexOf(heapvar);
   if(selected_node) {
@@ -34,6 +35,11 @@ function setHeapvar(heapvar, val) {
       d3.selectAll('.node').each(function(d) {
         if(selected_node.id !== d.id) {
           d.heapvars[index] = 'f';
+        } });
+    } else if(val === 'm') {
+      d3.selectAll('.node').each(function(d) {
+        if(d.heapvars[index] === 't') {
+          d.heapvars[index] = 'm';
         } });
     }
   }
