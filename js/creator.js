@@ -49,6 +49,23 @@ function printHeapvars() {
   d3.selectAll('.node').each(function(d) { console.log(d.heapvars); } )
 }
 
+// function to print node text
+function displayHeapvarsForNode(heapvars) {
+  nodeText = '';
+  // map does not mutate, so this is safe
+  heapvars.map(function(h, i) {
+    if(h === 't') {
+      nodeText += allHeapvars[i];
+    } else if(h === 'm') {
+      nodeText += (allHeapvars[i] + "?")
+    }
+  });
+  if(nodeText === '') {
+    nodeText = '-';
+  }
+  return nodeText;
+}
+
 // set up SVG for D3
 var width  = 960,
     height = 500,
@@ -200,6 +217,10 @@ function restart() {
     .attr('r', function(d) { return (d.summary) ? largeRadius : smallRadius })
     .classed('reflexive', function(d) { return d.reflexive; });
 
+  // update text for existing nodes
+  d3.selectAll('text')
+    .text(function(d) { return displayHeapvarsForNode(d.heapvars); });
+
   // add new nodes
   var g = circle.enter().append('svg:g');
 
@@ -282,7 +303,7 @@ function restart() {
       .attr('x', 0)
       .attr('y', 4)
       .attr('class', 'id')
-      .text(function(d) { return d.id; });
+      .text(function(d) { return displayHeapvarsForNode(d.heapvars); });
 
   // remove old nodes
   circle.exit().remove();
