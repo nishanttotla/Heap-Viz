@@ -93,7 +93,8 @@ var nodes = [
   lastNodeId = 2,
   links = [
     {source: nodes[0], target: nodes[1], left: false, right: true, maybe: true},
-    {source: nodes[1], target: nodes[2], left: false, right: true, maybe: true}
+    {source: nodes[1], target: nodes[2], left: false, right: true, maybe: true},
+    {source: nodes[2], target: nodes[2], left: false, right: true, maybe: true},
   ];
 
 // init D3 force layout
@@ -151,6 +152,7 @@ function resetMouseVars() {
 }
 
 // check if the link is mutual, used to decide whether to draw curved or straight arrow
+// we assume this function isn't called for reflexive edges, which get handled first
 function isLinkMutual(l) {
   var source = l.target.id;
   var target = l.source.id; // interchanged
@@ -435,6 +437,32 @@ function keydown() {
       }
       selected_link = null;
       selected_node = null;
+      restart();
+      break;
+    case 82: // R
+      // create a reflexive edge on the selected node
+      if(selected_node) {
+        var source = selected_node,
+            target = selected_node,
+            direction = 'right';
+        var refLink;
+        refLink = links.filter(function(l) {
+          return (l.source === source && l.target === target);
+        })[0];
+
+        // if link doesn't exist, create it
+        if(!refLink) {
+          refLink = {source: source, target: target, left: false, right: false, maybe: true};
+          refLink[direction] = true;
+          links.push(refLink);
+          // if there is a True link going out of source, convert it to Maybe
+          convertAllOutgoingEdgesMaybe(source);
+        }
+
+        // select new link
+        selected_link = refLink;
+        selected_node = null;
+      }
       restart();
       break;
     case 83: // S
