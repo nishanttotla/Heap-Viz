@@ -150,6 +150,16 @@ function resetMouseVars() {
   mousedown_link = null;
 }
 
+// check if the link is mutual, used to decide whether to draw curved or straight arrow
+function isLinkMutual(l) {
+  var source = l.target.id;
+  var target = l.source.id; // interchanged
+  if(links.filter(function(l) { return (l.source.id===source && l.target.id === target); }).length > 0) {
+    return true;
+  }
+  return false;
+}
+
 // update force layout (called automatically each iteration)
 function tick() {
   // draw directed edges with proper padding from node centers
@@ -165,7 +175,12 @@ function tick() {
         sourceY = d.source.y + (sourcePadding * normY),
         targetX = d.target.x - (targetPadding * normX),
         targetY = d.target.y - (targetPadding * normY);
-    return 'M' + sourceX + ',' + sourceY + 'L' + targetX + ',' + targetY;
+
+    if(isLinkMutual(d)) {
+      return 'M' + sourceX + ',' + sourceY + 'A' + dist/2 + ',' + dist/2 + ',0,0,0,' + targetX + ',' + targetY;
+    } else {
+      return 'M' + sourceX + ',' + sourceY + 'L' + targetX + ',' + targetY;
+    }
   });
 
   circle.attr('transform', function(d) {
