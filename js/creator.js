@@ -164,13 +164,25 @@ function isLinkMutual(l) {
 function tick() {
   // draw directed edges with proper padding from node centers
   path.attr('d', function(d) {
+    var sourcePadding = d.left ? (d.source.summary ? largeRadius+5 : largeRadius) : (d.source.summary ? smallRadius+5 : smallRadius),
+        targetPadding = d.right ? (d.target.summary ? largeRadius+5 : largeRadius) : (d.target.summary ? smallRadius+5 : smallRadius);
+
+    // handle reflexive edges first
+    if(d.source.id === d.target.id) {
+      var sourceX = d.source.x,
+          sourceY = d.source.y - sourcePadding, // reflexive edges are always oriented up
+          x1 = sourceX - 3*largeRadius;
+          y1 = sourceY - 3*largeRadius;
+          x2 = sourceX + 3*largeRadius;
+          y2 = sourceY - 3*largeRadius;
+      return 'M' + sourceX + ',' + sourceY + 'C' + x1 + ',' + y1 + ',' + x2 + ',' + y2 + ',' + sourceX + ',' + sourceY;
+    }
+
     var deltaX = d.target.x - d.source.x,
         deltaY = d.target.y - d.source.y,
         dist = Math.sqrt(deltaX * deltaX + deltaY * deltaY),
         normX = deltaX / dist,
         normY = deltaY / dist,
-        sourcePadding = d.left ? (d.source.summary ? largeRadius+5 : largeRadius) : (d.source.summary ? smallRadius+5 : smallRadius),
-        targetPadding = d.right ? (d.target.summary ? largeRadius+5 : largeRadius) : (d.target.summary ? smallRadius+5 : smallRadius),
         sourceX = d.source.x + (sourcePadding * normX),
         sourceY = d.source.y + (sourcePadding * normY),
         targetX = d.target.x - (targetPadding * normX),
