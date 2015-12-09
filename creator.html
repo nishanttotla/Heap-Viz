@@ -7,7 +7,15 @@
   </head>
 
   <body>
-
+    <form id='predSelector'>
+      <input type="radio" name="radioPred" value="p1" checked>p1
+      <br>
+      <input type="radio" name="radioPred" value="p2">p2
+      <br>
+      <input type="radio" name="radioPred" value="none">none
+      <br>
+      <input type="button" name="radioPred" value="Update predicate" onClick="updateSelectedPredicate()">
+    </form>
   </body>
   <script src="http://d3js.org/d3.v3.min.js"></script>
   <script src="js/creator.js"></script>

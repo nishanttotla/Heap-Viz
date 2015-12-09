@@ -17,6 +17,12 @@ function initHeapvarAssignments() {
   return ['f', 'f'];
 }
 
+// update selected predicate from the HTML form
+function updateSelectedPredicate() {
+  selectedPredicate = 'p1';
+  restart();
+}
+
 /*
 functions to set predicate/heap variables of selected node
 */
