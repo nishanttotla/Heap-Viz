@@ -6,7 +6,8 @@ Directed graph editor courtesy http://bl.ocks.org/rkirsling/5001347
 var allPredicates = ['p1', 'p2'],
     allHeapvars = ['x', 'y'];
 
-var selectedPredicate = null;
+var selectedPredicate = null,
+    selectedHeapvar = 'x';
 
 // initial assignments. Other possible values are 't' and 'm'. These are functions because assignments aren't immutable
 function initPredAssignments() {
@@ -17,9 +18,54 @@ function initHeapvarAssignments() {
   return ['f', 'f'];
 }
 
+/*
+Functions to interact with HTML forms
+TODO everything is static right now, need to make it dynamic dependent on the set of predicates
+*/
+
 // update selected predicate from the HTML form
 function updateSelectedPredicate() {
-  selectedPredicate = 'p1';
+  if(document.getElementById('p1').checked) {
+    selectedPredicate = 'p1';
+  } else if(document.getElementById('p2').checked) {
+    selectedPredicate = 'p2';
+  } else {
+    selectedPredicate = null;
+  }
+  restart();
+}
+
+// update selected heapvar from the HTML form
+function updateSelectedHeapvar() {
+  if(document.getElementById('x').checked) {
+    selectedHeapvar = 'x';
+  } else if(document.getElementById('y').checked) {
+    selectedHeapvar = 'y';
+  }
+  restart();
+}
+
+// update predicate value by taking it from the form
+// TODO need input validation
+function updatePredicateValueFromForm() {
+  var valInForm = document.getElementById('predVal').value;
+  if(document.getElementById('p1').checked) {
+    setPredicate('p1',valInForm);
+  } else if(document.getElementById('p2').checked) {
+    setPredicate('p2',valInForm);
+  }
+  restart();
+}
+
+// update heapvar value by taking it from the form
+// TODO need input validation
+function updateHeapvarValueFromForm() {
+  var valInForm = document.getElementById('heapvarVal').value;
+  if(document.getElementById('x').checked) {
+    setHeapvar('x',valInForm);
+  } else if(document.getElementById('y').checked) {
+    setHeapvar('y',valInForm);
+  }
   restart();
 }
 

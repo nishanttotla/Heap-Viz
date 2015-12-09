@@ -7,15 +7,38 @@
   </head>
 
   <body>
-    <form id='predSelector'>
-      <input type="radio" name="radioPred" value="p1" checked>p1
-      <br>
-      <input type="radio" name="radioPred" value="p2">p2
-      <br>
-      <input type="radio" name="radioPred" value="none">none
-      <br>
-      <input type="button" name="radioPred" value="Update predicate" onClick="updateSelectedPredicate()">
-    </form>
+    <div>
+      Choose a predicate<br>
+      <form id='predSelector' onchange='updateSelectedPredicate()'>
+        <input type="radio" name="predSelector" id="p1">p1
+        <br>
+        <input type="radio" name="predSelector" id="p2">p2
+        <br>
+        <input type="radio" name="predSelector" id="none" checked>none
+        <br>
+      </form>
+      Set predicate value for selected predicate and node<br>
+      <form id='predSetter'>
+        <input type="text" name="predVal" id="predVal">
+        <input type="button" value='Set value' onClick='updatePredicateValueFromForm()'>
+        <br>
+      </form>
+    </div>
+
+    <div>
+      Choose a heap variable<br>
+      <form id='heapvarSelector' onchange='updateSelectedHeapvar()'>
+        <input type="radio" name="heapvarSelector" id="x" checked>x
+        <br>
+        <input type="radio" name="heapvarSelector" id="y">y
+      </form>
+      Set predicate value for selected predicate and node<br>
+      <form id='heapvarSetter'>
+        <input type="text" name="heapvarVal" id="heapvarVal">
+        <input type="button" value='Set value' onClick='updateHeapvarValueFromForm()'>
+        <br>
+      </form>
+    </div>
   </body>
   <script src="http://d3js.org/d3.v3.min.js"></script>
   <script src="js/creator.js"></script>
