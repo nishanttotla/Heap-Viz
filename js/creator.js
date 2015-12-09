@@ -6,6 +6,8 @@ Directed graph editor courtesy http://bl.ocks.org/rkirsling/5001347
 var allPredicates = ['p1', 'p2'],
     allHeapvars = ['x', 'y'];
 
+var selectedPredicate = null;
+
 // initial assignments. Other possible values are 't' and 'm'. These are functions because assignments aren't immutable
 function initPredAssignments() {
   return ['f', 'f'];
@@ -57,7 +59,7 @@ function displayHeapvarsForNode(heapvars) {
     if(h === 't') {
       nodeText += allHeapvars[i];
     } else if(h === 'm') {
-      nodeText += (allHeapvars[i] + "?")
+      nodeText += (allHeapvars[i] + '?')
     }
   });
   if(nodeText === '') {
@@ -68,8 +70,23 @@ function displayHeapvarsForNode(heapvars) {
 
 // set up SVG for D3
 var width  = 960,
-    height = 500,
-    colors = d3.scale.category10();
+    height = 500;
+
+// return node colors based on chosen predicate
+function colors(id) {
+  if(selectedPredicate) {
+    var predVal = nodes[id].predicates[allPredicates.indexOf(selectedPredicate)];
+    if(predVal === 't') {
+      return '#5A5';
+    } else if(predVal === 'f') {
+      return '#D52020';
+    } else {
+      // maybe
+      return '#FCC';
+    }
+  }
+  return '#B59B9B';
+}
 
 // graph appearance parameters
 var smallRadius = 15,
