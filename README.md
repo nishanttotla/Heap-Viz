@@ -19,7 +19,7 @@ You can edit the port number if necessary.
 ### Start visualization
 Open a web browser and go to `http://localhost:8000/creator.html`. If all went well, you should see something like this
 
-[IMAGE]
+![Alt text](https://cloud.githubusercontent.com/assets/1872537/11706411/707db74a-9ead-11e5-9c92-8e9d83b5b940.png "Screenshot")
 
 Now you're ready to create graphs!
 
