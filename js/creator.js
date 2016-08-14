@@ -124,10 +124,22 @@ function displayHeapvarsForNode(heapvars) {
 var width  = 960,
     height = 500;
 
+// maps the node id to its index in the list of nodes
+// returns -1 if the id is not in the list
+function idToIndex(id) {
+  for (var idx = 0, len = nodes.length; idx < len; idx++) {
+    if (nodes[idx].id === id) {
+      return idx
+    }
+  }
+  return -1
+}
+
 // return node colors based on chosen predicate
 function colors(id) {
   if(selectedPredicate) {
-    var predVal = nodes[id].predicates[allPredicates.indexOf(selectedPredicate)];
+    // nodes are referenced by id, so index needs to be found for a given id
+    var predVal = nodes[idToIndex(id)].predicates[allPredicates.indexOf(selectedPredicate)];
     if(predVal === 't') {
       return '#5A5';
     } else if(predVal === 'f') {
