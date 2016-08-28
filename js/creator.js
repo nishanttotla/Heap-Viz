@@ -4,7 +4,7 @@ Directed graph editor courtesy http://bl.ocks.org/rkirsling/5001347
 
 // verification data, must be retrieved from the verifier
 var allPredicates = ['p1', 'p2'],
-    allHeapvars = ['x', 'y'];
+    allHeapvars = ['x', 'y', 'NIL'];
 
 var selectedPredicate = null,
     selectedHeapvar = 'x';
@@ -15,7 +15,7 @@ function initPredAssignments() {
 }
 
 function initHeapvarAssignments() {
-  return ['f', 'f'];
+  return ['f', 'f', 'f'];
 }
 
 /*
